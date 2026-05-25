@@ -1,26 +1,34 @@
-
-// Esquema de validación para la ruta de cálculo de P&L (Profit and Loss) en una operación de trading:
+// Esquema de validación JSON Schema para POST /api/v1/calculate
+// Fastify usa Ajv internamente para validar request/response
 export const plSchema = {
   body: {
     type: 'object',
     required: ['investedCapital', 'entryPrice', 'takeProfitPrice', 'stopLossPrice'],
+    // Rechaza campos extra en el body (protección contra inyección de datos)
+    additionalProperties: false,
     properties: {
       investedCapital: {
         type: 'number',
-        exclusiveMinimum: 0,
+        exclusiveMinimum: 0, // Debe ser > 0
+        maximum: 1e15,       // Previene desbordamiento numérico
         description: 'Capital total invertido en la operación',
       },
       entryPrice: {
         type: 'number',
         exclusiveMinimum: 0,
+        maximum: 1e15,
         description: 'Precio de entrada del activo',
       },
       takeProfitPrice: {
         type: 'number',
+        exclusiveMinimum: 0,
+        maximum: 1e15,
         description: 'Precio de take profit del activo',
       },
       stopLossPrice: {
         type: 'number',
+        exclusiveMinimum: 0,
+        maximum: 1e15,
         description: 'Precio de stop loss del activo',
       },
     },

@@ -1,0 +1,10 @@
+/* Tailwind v4 compilado localmente (sin CDN)
+   @theme extiende la paleta de colores personalizada del proyecto */
+@import "tailwindcss";
+
+@theme {
+  --color-space-900: #0a0e27;
+  --color-space-950: #000000;
+  --color-cyber-400: #00d4ff;
+  --color-cyber-500: #00b8e6;
+}

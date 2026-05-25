@@ -4,31 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Calculadora de P&L</title>
+  <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+  <link rel="stylesheet" href="css/tailwind.css" />
   <link rel="stylesheet" href="css/index.css" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    // Configuración personalizada de Tailwind para colores y otros estilos:
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            space: {
-              900: '#0a0e27',
-              950: '#000000',
-            },
-            cyber: {
-              400: '#00d4ff',
-              500: '#00b8e6',
-            },
-          },
-
-        },
-      },
-    }
-  </script>
-
 </head>
-<body class="min-h-screen flex items-center justify-center p-4 font-sans antialiased">
+<body class="min-h-screen flex flex-col font-sans antialiased">
+
+  <main class="flex-1 flex items-center justify-center p-4">
 
   <!-- Language Selector -->
   <select id="langSelect" class="fixed top-4 right-4 z-50 lang-select">
@@ -40,8 +22,8 @@
   <div class="stars-layer"></div>
 
   <!-- Nebulosas decorativas -->
-  <div class="fixed top-[-10%] left-[-5%] w-[400px] h-[400px] rounded-full bg-cyan-500/5 blur-[120px] pointer-events-none z-0"></div>
-  <div class="fixed bottom-[-10%] right-[-5%] w-[500px] h-[500px] rounded-full bg-purple-500/4 blur-[150px] pointer-events-none z-0"></div>
+  <div class="fixed top-[-10%] left-[-5%] w-100 h-100 rounded-full bg-cyan-500/5 blur-[120px] pointer-events-none z-0"></div>
+  <div class="fixed bottom-[-10%] right-[-5%] w-125 h-125 rounded-full bg-purple-500/4 blur-[150px] pointer-events-none z-0"></div>
 
   <div class="glass-card rounded-2xl p-8 w-full max-w-lg relative z-10">
 
@@ -52,23 +34,23 @@
       </div>
       <div>
         <h1 class="text-xl font-semibold text-white tracking-tight" data-i18n="title">Calculadora de P&amp;L</h1>
-        <p class="text-xs text-gray-500 tracking-wide" data-i18n="subtitle">Profit &amp; Loss Estimator</p>
+        <p class="text-xs text-gray-400 tracking-wide" data-i18n="subtitle">Profit &amp; Loss Estimator</p>
       </div>
     </div>
 
       <div class="mb-5">
-        <p class="text-center text-xs italic text-amber-400/50" data-i18n="disclaimer">Solo EUR/USD · Sin soporte para pares cripto</p>
+        <p class="text-center text-xs italic text-amber-300/70" data-i18n="disclaimer">Solo EUR/USD · Sin soporte para pares cripto</p>
       </div>
 
     <form id="calcForm" class="space-y-5">
       <div class="input-wrapper">
-        <label for="investedCapital" class="block text-xs font-medium text-gray-400 uppercase tracking-widest mb-1.5" data-i18n="investedCapital">Capital Invertido</label>
+        <label for="investedCapital" class="block text-xs font-medium text-gray-300 uppercase tracking-widest mb-1.5" data-i18n="investedCapital">Capital Invertido</label>
         <input type="number" id="investedCapital" name="investedCapital" step="any" required
                class="input-space w-full rounded-xl px-4 py-3 text-sm" placeholder="0.00" />
       </div>
 
       <div class="input-wrapper">
-        <label for="entryPrice" class="block text-xs font-medium text-gray-400 uppercase tracking-widest mb-1.5">
+        <label for="entryPrice" class="block text-xs font-medium text-gray-300 uppercase tracking-widest mb-1.5">
           <span data-i18n="entryPrice">Precio de Entrada</span>
           <button type="button" class="info-icon-btn" aria-label="Más información" data-i18n-aria="moreInfo">
             <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -85,7 +67,7 @@
 
       <div class="grid grid-cols-2 gap-4">
         <div class="input-wrapper">
-          <label for="takeProfitPrice" class="block text-xs font-medium text-gray-400 uppercase tracking-widest mb-1.5">
+          <label for="takeProfitPrice" class="block text-xs font-medium text-gray-300 uppercase tracking-widest mb-1.5">
             Take Profit
             <button type="button" class="info-icon-btn" aria-label="Más información" data-i18n-aria="moreInfo">
               <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -101,7 +83,7 @@
         </div>
 
         <div class="input-wrapper">
-          <label for="stopLossPrice" class="block text-xs font-medium text-gray-400 uppercase tracking-widest mb-1.5">
+          <label for="stopLossPrice" class="block text-xs font-medium text-gray-300 uppercase tracking-widest mb-1.5">
             Stop Loss
             <button type="button" class="info-icon-btn" aria-label="Más información" data-i18n-aria="moreInfo">
               <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -126,7 +108,7 @@
     <div id="results" class="hidden mt-8 space-y-4">
 
       <div class="result-card rounded-xl p-5 text-center">
-        <span class="text-xs text-gray-500 uppercase tracking-widest" data-i18n="assetQuantity">Cantidad del Activo</span>
+        <span class="text-xs text-gray-400 uppercase tracking-widest" data-i18n="assetQuantity">Cantidad del Activo</span>
         <p id="assetQuantity" class="result-value text-2xl font-bold text-cyber-400 mt-1"></p>
       </div>
 
@@ -139,9 +121,9 @@
               <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
             </svg>
           </div>
-          <span class="text-xs text-gray-500 uppercase tracking-widest">Take Profit</span>
+          <span class="text-xs text-gray-400 uppercase tracking-widest">Take Profit</span>
           <p id="tpNetPL" class="result-value text-lg font-bold text-green-400 mt-1"></p>
-          <p id="tpPercentage" class="text-sm text-green-400/60"></p>
+          <p id="tpPercentage" class="text-sm text-green-400"></p>
         </div>
 
         <div class="result-card rounded-xl p-4 text-center">
@@ -150,18 +132,26 @@
               <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
             </svg>
           </div>
-          <span class="text-xs text-gray-500 uppercase tracking-widest">Stop Loss</span>
+          <span class="text-xs text-gray-400 uppercase tracking-widest">Stop Loss</span>
           <p id="slNetPL" class="result-value text-lg font-bold text-red-400 mt-1"></p>
-          <p id="slPercentage" class="text-sm text-red-400/60"></p>
+          <p id="slPercentage" class="text-sm text-red-400"></p>
         </div>
       </div>
 
       <div class="relative pt-4">
-        <div class="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-        <p class="text-center text-xs italic text-gray-500/60" data-i18n="feesNotIncluded">No se cuentan las comisiones.</p>
+        <div class="absolute top-0 left-1/4 right-1/4 h-px bg-linear-to-r from-transparent via-white/10 to-transparent"></div>
+        <p class="text-center text-xs italic text-gray-400" data-i18n="feesNotIncluded">No se cuentan las comisiones.</p>
       </div>
     </div>
   </div>
+  </main>
+  <footer class="py-4 text-gray-400 text-xs flex justify-between items-center px-4">
+    <p data-i18n="copyright">Copyright &copy; 2026 por Stefan Cojita. Todos los derechos reservados.</p>
+    <p data-i18n-html="reportBug">
+      Para reportar bugs o indicar sugerencias, env&iacute;e un mensaje a este
+      <a href="https://github.com/SCojita" class="underline hover:text-cyber-400 transition-colors duration-200" target="_blank" rel="noopener noreferrer">perfil</a>
+    </p>
+  </footer>
 
   <script>
     // Objeto de traducciones:
@@ -181,6 +171,8 @@
         feesNotIncluded: 'Commissions not included.',
         calcError: 'Calculation error',
         connError: 'Connection error',
+        copyright: 'Copyright \u00A9 2026 by Stefan Cojita. All rights reserved.',
+        reportBug: 'To report bugs or suggest improvements, send a message to this <a href="https://github.com/SCojita" class="underline hover:text-cyber-400 transition-colors duration-200" target="_blank" rel="noopener noreferrer">profile</a>',
       },
       es: {
         title: 'Calculadora de P&L',
@@ -194,9 +186,11 @@
         infoTP: 'Precio objetivo al cual se cerrar\u00E1 la operaci\u00F3n para obtener ganancias.',
         infoSL: 'Precio l\u00EDmite al cual se cerrar\u00E1 la operaci\u00F3n para evitar p\u00E9rdidas mayores.',
         assetQuantity: 'Cantidad del Activo',
-        feesNotIncluded: 'No se cuentan las comisiones.',
+        feesNotIncluded: 'No se incluyen las comisiones.',
         calcError: 'Error al calcular',
         connError: 'Error de conexi\u00F3n',
+        copyright: 'Copyright \u00A9 2026 por Stefan Cojita. Todos los derechos reservados.',
+        reportBug: 'Para reportar bugs o indicar sugerencias, env\u00EDe un mensaje a este <a href="https://github.com/SCojita" class="underline hover:text-cyber-400 transition-colors duration-200" target="_blank" rel="noopener noreferrer">perfil</a>',
       }
     };
 
@@ -219,6 +213,12 @@
         const key = el.dataset.i18nAria;
         if (translations[lang][key]) {
           el.setAttribute('aria-label', translations[lang][key]);
+        }
+      });
+      document.querySelectorAll('[data-i18n-html]').forEach(el => {
+        const key = el.dataset.i18nHtml;
+        if (translations[lang][key]) {
+          el.innerHTML = translations[lang][key];
         }
       });
       document.documentElement.lang = lang;

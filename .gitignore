@@ -19,6 +19,9 @@ dist/
 build/
 out/
 
+# Archivos de configuracion locales
+config/
+
 # IDE y editores
 .vscode/
 .idea/
