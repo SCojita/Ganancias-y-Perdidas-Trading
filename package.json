@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "nodemon src/app.js",
+    "dev": "nodemon server.js",
     "test": "node --experimental-vm-modules node_modules/jest-cli/bin/jest.js",
     "build:css:scss": "sass public/css/index.scss public/css/index.css",
     "build:css:tailwind": "@tailwindcss/cli -i ./public/css/tailwind-input.css -o ./public/css/tailwind.css --minify",

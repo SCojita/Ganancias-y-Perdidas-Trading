@@ -148,7 +148,7 @@ pnl-calc-backend/
 
 ## Deploy
 
-Conectá el repositorio a [Vercel](https://vercel.com). La plataforma detecta `vercel.json` automáticamente y deploya `src/app.js` como serverless function.
+Conecta el repositorio a [Vercel](https://vercel.com). La plataforma detecta `vercel.json` automáticamente y deploya `src/app.js` como serverless function.
 
 ```bash
 npm i -g vercel
