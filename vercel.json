@@ -12,8 +12,11 @@
       "dest": "src/app.js"
     },
     {
+      "handle": "filesystem"
+    },
+    {
       "src": "/(.*)",
-      "dest": "/public/$1"
+      "dest": "src/app.js"
     }
   ],
   "headers": [
