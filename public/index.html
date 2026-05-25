@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculadora de P&L</title>
+  <link rel="stylesheet" href="css/index.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Configuración personalizada de Tailwind para colores y otros estilos:
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            space: {
+              900: '#0a0e27',
+              950: '#000000',
+            },
+            cyber: {
+              400: '#00d4ff',
+              500: '#00b8e6',
+            },
+          },
+
+        },
+      },
+    }
+  </script>
+
+</head>
+<body class="min-h-screen flex items-center justify-center p-4 font-sans antialiased">
+
+  <!-- Language Selector -->
+  <select id="langSelect" class="fixed top-4 right-4 z-50 lang-select">
+    <option value="en">English</option>
+    <option value="es">Spanish</option>
+  </select>
+
+  <!-- Capa de estrellas -->
+  <div class="stars-layer"></div>
+
+  <!-- Nebulosas decorativas -->
+  <div class="fixed top-[-10%] left-[-5%] w-[400px] h-[400px] rounded-full bg-cyan-500/5 blur-[120px] pointer-events-none z-0"></div>
+  <div class="fixed bottom-[-10%] right-[-5%] w-[500px] h-[500px] rounded-full bg-purple-500/4 blur-[150px] pointer-events-none z-0"></div>
+
+  <div class="glass-card rounded-2xl p-8 w-full max-w-lg relative z-10">
+
+    <!-- Logo / Header -->
+    <div class="flex items-center gap-3 mb-8">
+      <div class="w-9 h-9 rounded-lg bg-cyber-500/20 border border-cyber-500/30 flex items-center justify-center text-cyber-400 text-sm font-bold">
+        P&amp;L
+      </div>
+      <div>
+        <h1 class="text-xl font-semibold text-white tracking-tight" data-i18n="title">Calculadora de P&amp;L</h1>
+        <p class="text-xs text-gray-500 tracking-wide" data-i18n="subtitle">Profit &amp; Loss Estimator</p>
+      </div>
+    </div>
+
+      <div class="mb-5">
+        <p class="text-center text-xs italic text-amber-400/50" data-i18n="disclaimer">Solo EUR/USD · Sin soporte para pares cripto</p>
+      </div>
+
+    <form id="calcForm" class="space-y-5">
+      <div class="input-wrapper">
+        <label for="investedCapital" class="block text-xs font-medium text-gray-400 uppercase tracking-widest mb-1.5" data-i18n="investedCapital">Capital Invertido</label>
+        <input type="number" id="investedCapital" name="investedCapital" step="any" required
+               class="input-space w-full rounded-xl px-4 py-3 text-sm" placeholder="0.00" />
+      </div>
+
+      <div class="input-wrapper">
+        <label for="entryPrice" class="block text-xs font-medium text-gray-400 uppercase tracking-widest mb-1.5">
+          <span data-i18n="entryPrice">Precio de Entrada</span>
+          <button type="button" class="info-icon-btn" aria-label="Más información" data-i18n-aria="moreInfo">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="8" cy="8" r="7"/>
+              <path d="M8 7.5v4"/>
+              <path d="M8 5v.5"/>
+            </svg>
+          </button>
+        </label>
+        <input type="number" id="entryPrice" name="entryPrice" step="any" required
+               class="input-space w-full rounded-xl px-4 py-3 text-sm" placeholder="0.00" />
+        <div class="info-panel"><p class="info-panel-text info-panel-text--entry" data-i18n="infoEntry">Precio al que se abre la posición en el mercado.</p></div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div class="input-wrapper">
+          <label for="takeProfitPrice" class="block text-xs font-medium text-gray-400 uppercase tracking-widest mb-1.5">
+            Take Profit
+            <button type="button" class="info-icon-btn" aria-label="Más información" data-i18n-aria="moreInfo">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="8" cy="8" r="7"/>
+                <path d="M8 7.5v4"/>
+                <path d="M8 5v.5"/>
+              </svg>
+            </button>
+          </label>
+          <input type="number" id="takeProfitPrice" name="takeProfitPrice" step="any" required
+                 class="input-space w-full rounded-xl px-4 py-3 text-sm" placeholder="0.00" />
+          <div class="info-panel"><p class="info-panel-text info-panel-text--tp" data-i18n="infoTP">Precio objetivo al cual se cerrará la operación para obtener ganancias.</p></div>
+        </div>
+
+        <div class="input-wrapper">
+          <label for="stopLossPrice" class="block text-xs font-medium text-gray-400 uppercase tracking-widest mb-1.5">
+            Stop Loss
+            <button type="button" class="info-icon-btn" aria-label="Más información" data-i18n-aria="moreInfo">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="8" cy="8" r="7"/>
+                <path d="M8 7.5v4"/>
+                <path d="M8 5v.5"/>
+              </svg>
+            </button>
+          </label>
+          <input type="number" id="stopLossPrice" name="stopLossPrice" step="any" required
+                 class="input-space w-full rounded-xl px-4 py-3 text-sm" placeholder="0.00" />
+          <div class="info-panel"><p class="info-panel-text info-panel-text--sl" data-i18n="infoSL">Precio límite al cual se cerrará la operación para evitar pérdidas mayores.</p></div>
+        </div>
+      </div>
+
+      <button type="submit"
+              class="btn-glow w-full bg-cyber-500 hover:bg-cyber-400 text-black font-semibold py-3 px-4 rounded-xl transition-all duration-300 text-sm uppercase tracking-widest" data-i18n="calculate">
+        Calcular
+      </button>
+    </form>
+
+    <div id="results" class="hidden mt-8 space-y-4">
+
+      <div class="result-card rounded-xl p-5 text-center">
+        <span class="text-xs text-gray-500 uppercase tracking-widest" data-i18n="assetQuantity">Cantidad del Activo</span>
+        <p id="assetQuantity" class="result-value text-2xl font-bold text-cyber-400 mt-1"></p>
+      </div>
+
+      <hr class="border-white/5" />
+
+      <div class="grid grid-cols-2 gap-4">
+        <div class="result-card rounded-xl p-4 text-center">
+          <div class="w-8 h-8 rounded-full bg-green-500/10 border border-green-500/20 flex items-center justify-center mx-auto mb-2">
+            <svg class="w-4 h-4 text-green-400" fill="none" viewBox="0 0 24 16" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
+            </svg>
+          </div>
+          <span class="text-xs text-gray-500 uppercase tracking-widest">Take Profit</span>
+          <p id="tpNetPL" class="result-value text-lg font-bold text-green-400 mt-1"></p>
+          <p id="tpPercentage" class="text-sm text-green-400/60"></p>
+        </div>
+
+        <div class="result-card rounded-xl p-4 text-center">
+          <div class="w-8 h-8 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center mx-auto mb-2">
+            <svg class="w-4 h-4 text-red-400" fill="none" viewBox="0 0 24 16" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+            </svg>
+          </div>
+          <span class="text-xs text-gray-500 uppercase tracking-widest">Stop Loss</span>
+          <p id="slNetPL" class="result-value text-lg font-bold text-red-400 mt-1"></p>
+          <p id="slPercentage" class="text-sm text-red-400/60"></p>
+        </div>
+      </div>
+
+      <div class="relative pt-4">
+        <div class="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+        <p class="text-center text-xs italic text-gray-500/60" data-i18n="feesNotIncluded">No se cuentan las comisiones.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Objeto de traducciones:
+    const translations = {
+      en: {
+        title: 'P&L Calculator',
+        subtitle: 'Profit & Loss Estimator',
+        disclaimer: 'EUR/USD Only \u00B7 No crypto pair support',
+        investedCapital: 'Invested Capital',
+        entryPrice: 'Entry Price',
+        calculate: 'Calculate',
+        moreInfo: 'More information',
+        infoEntry: 'Price at which the market position is opened.',
+        infoTP: 'Target price at which the trade will be closed for profit.',
+        infoSL: 'Limit price at which the trade will be closed to avoid further losses.',
+        assetQuantity: 'Asset Quantity',
+        feesNotIncluded: 'Commissions not included.',
+        calcError: 'Calculation error',
+        connError: 'Connection error',
+      },
+      es: {
+        title: 'Calculadora de P&L',
+        subtitle: 'Profit & Loss Estimator',
+        disclaimer: 'Solo EUR/USD \u00B7 Sin soporte para pares cripto',
+        investedCapital: 'Capital Invertido',
+        entryPrice: 'Precio de Entrada',
+        calculate: 'Calcular',
+        moreInfo: 'M\u00E1s informaci\u00F3n',
+        infoEntry: 'Precio al que se abre la posici\u00F3n en el mercado.',
+        infoTP: 'Precio objetivo al cual se cerrar\u00E1 la operaci\u00F3n para obtener ganancias.',
+        infoSL: 'Precio l\u00EDmite al cual se cerrar\u00E1 la operaci\u00F3n para evitar p\u00E9rdidas mayores.',
+        assetQuantity: 'Cantidad del Activo',
+        feesNotIncluded: 'No se cuentan las comisiones.',
+        calcError: 'Error al calcular',
+        connError: 'Error de conexi\u00F3n',
+      }
+    };
+
+    // Función de traducción:
+    function t(key) {
+      const lang = localStorage.getItem('lang') || 'en';
+      return translations[lang][key] || key;
+    }
+
+    // Función para cambiar el idioma:
+    function setLanguage(lang) {
+      // Actualizamos todos los elementos con data-i18n y data-i18n-aria:
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        if (translations[lang][key]) {
+          el.textContent = translations[lang][key];
+        }
+      });
+      document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+        const key = el.dataset.i18nAria;
+        if (translations[lang][key]) {
+          el.setAttribute('aria-label', translations[lang][key]);
+        }
+      });
+      document.documentElement.lang = lang;
+      document.getElementById('langSelect').value = lang;
+      localStorage.setItem('lang', lang);
+    }
+
+    const savedLang = localStorage.getItem('lang') || 'en'; // Guardamos la selección del idioma en localStorage para mantenerla entre sesiones.
+    setLanguage(savedLang);
+
+    // Event listener para el selector de idioma:
+    document.getElementById('langSelect').addEventListener('change', (e) => {
+      setLanguage(e.target.value);
+    });
+
+    // Event listener para los botones de información:
+    document.querySelectorAll('.info-icon-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const panel = btn.closest('.input-wrapper').querySelector('.info-panel');
+        if (panel) panel.classList.toggle('active');
+      });
+    });
+
+    // Event listener para el formulario de cálculo:
+    document.getElementById('calcForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(e.target);
+
+      // Validación básica de los datos ingresados:
+      const payload = {
+        investedCapital: parseFloat(formData.get('investedCapital')),
+        entryPrice: parseFloat(formData.get('entryPrice')),
+        takeProfitPrice: parseFloat(formData.get('takeProfitPrice')),
+        stopLossPrice: parseFloat(formData.get('stopLossPrice')),
+      };
+
+      try {
+        const res = await fetch('/api/v1/calculate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+
+        if (!res.ok) {
+          const err = await res.json();
+          alert(err.message || t('calcError'));
+          return;
+        }
+
+        const data = await res.json();
+
+        document.getElementById('assetQuantity').textContent = data.assetQuantity;
+
+        document.getElementById('tpNetPL').textContent = `+${data.takeProfit.netPL.toFixed(2)} \u20AC/$`;
+        document.getElementById('tpPercentage').textContent = `+${data.takeProfit.percentage.toFixed(2)}%`;
+
+        document.getElementById('slNetPL').textContent = `${data.stopLoss.netPL.toFixed(2)} \u20AC/$`;
+        document.getElementById('slPercentage').textContent = `${data.stopLoss.percentage.toFixed(2)}%`;
+
+        document.getElementById('results').classList.remove('hidden');
+      } catch (err) {
+        alert(t('connError') + ': ' + err.message);
+      }
+    });
+  </script>
+</body>
+</html>

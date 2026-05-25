@@ -1,11 +1,18 @@
 import Fastify from 'fastify';
+import fastifyStatic from '@fastify/static';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 import plRoutes from './routes/plRoutes.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const app = Fastify({ logger: true });
 
-// Definimos una ruta de prueba para verificar que el servidor está funcionando:
-app.get('/', async (request, reply) => {
-  return { status: 'ok' };
+app.register(fastifyStatic, {
+  root: join(__dirname, '..', 'public'),
+  prefix: '/',
+  index: 'index.html',
 });
 
 await app.register(plRoutes, { prefix: '/api/v1' }); // Registramos las rutas de PL con el prefijo /api/v1
