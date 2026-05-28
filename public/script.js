@@ -1,3 +1,13 @@
+/* Los navegadores móviles restauran el estado del formulario al recargar
+   (bfcache/autofill). Forzamos reset del form y ocultamos resultados. */
+window.addEventListener('pageshow', () => {
+  document.getElementById('calcForm').reset();
+  document.getElementById('results').classList.add('hidden');
+});
+
+/* Textos en inglés y español. Cada etiqueta HTML con data-i18n se reemplaza
+   según el idioma seleccionado. Las claves con sufijo -aria y -html permiten
+   traducir atributos aria-label y contenido con HTML respectivamente. */
 const translations = {
   en: {
     title: 'P&L Calculator',
@@ -37,11 +47,16 @@ const translations = {
   }
 };
 
+/* lookup: obtiene el texto traducido para una clave. Usa localStorage para
+   recordar el idioma entre visitas; si no hay guardado, inglés por defecto. */
 function t(key) {
   const lang = localStorage.getItem('lang') || 'en';
   return translations[lang][key] || key;
 }
 
+/* Recorre todos los elementos con data-i18n, data-i18n-aria, data-i18n-html
+   y reemplaza su contenido/atributos según el idioma activo. También persiste
+   la selección en localStorage y actualiza el <html lang="...">. */
 function setLanguage(lang) {
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.dataset.i18n;
@@ -66,13 +81,17 @@ function setLanguage(lang) {
   localStorage.setItem('lang', lang);
 }
 
+/* Al cargar la página, restauramos el último idioma elegido. */
 const savedLang = localStorage.getItem('lang') || 'en';
 setLanguage(savedLang);
 
+/* Cuando el usuario cambie el selector de idioma, aplicamos el nuevo. */
 document.getElementById('langSelect').addEventListener('change', (e) => {
   setLanguage(e.target.value);
 });
 
+/* Botones (i) junto a ciertos campos: muestran/ocultan un panel
+   informativo flotante con ayuda sobre el dato a introducir. */
 document.querySelectorAll('.info-icon-btn').forEach(btn => {
   btn.addEventListener('click', (e) => {
     e.stopPropagation();
@@ -81,18 +100,23 @@ document.querySelectorAll('.info-icon-btn').forEach(btn => {
   });
 });
 
+/* Envío del formulario: recoge los datos, llama a la API y pinta resultados. */
 document.getElementById('calcForm').addEventListener('submit', async (e) => {
   e.preventDefault();
 
   const formData = new FormData(e.target);
 
+  /* .replace(',', '.') permite que usuarios hispanos usen coma decimal.
+     parseFloat("1,50") devuelve 1; el replace lo convierte a "1.50". */
   const payload = {
-    investedCapital: parseFloat(formData.get('investedCapital')),
-    entryPrice: parseFloat(formData.get('entryPrice')),
-    takeProfitPrice: parseFloat(formData.get('takeProfitPrice')),
-    stopLossPrice: parseFloat(formData.get('stopLossPrice')),
+    investedCapital: parseFloat(formData.get('investedCapital').replace(',', '.')),
+    entryPrice: parseFloat(formData.get('entryPrice').replace(',', '.')),
+    takeProfitPrice: parseFloat(formData.get('takeProfitPrice').replace(',', '.')),
+    stopLossPrice: parseFloat(formData.get('stopLossPrice').replace(',', '.')),
   };
 
+  /* POST a la API. Si el servidor devuelve error (400, 422, 500), mostramos
+     el mensaje del backend. Si falla la red, lo capturamos en el catch. */
   try {
     const res = await fetch('/api/v1/calculate', {
       method: 'POST',
@@ -108,6 +132,8 @@ document.getElementById('calcForm').addEventListener('submit', async (e) => {
 
     const data = await res.json();
 
+    /* Pintamos los resultados: cantidad de activo, P&L neto y porcentaje
+       para Take Profit y Stop Loss. El contenedor #results se muestra. */
     document.getElementById('assetQuantity').textContent = data.assetQuantity;
 
     document.getElementById('tpNetPL').textContent = `+${data.takeProfit.netPL.toFixed(2)} \u20AC/$`;
