@@ -3,17 +3,94 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Calculadora de P&L</title>
+  <title>P&L Calculator for Trading | Profit & Loss Calculator</title>
+  <meta name="description" content="Free P&L calculator for trading. Calculate profit and loss on any trade using entry price, take profit, and stop loss. No signup required." />
+  <link rel="canonical" href="https://calculatorpnl.com/" />
+  <meta property="og:title" content="P&L Calculator for Trading | Profit & Loss Calculator" />
+  <meta property="og:description" content="Calculate your trading profit and loss instantly. Free online P&L calculator with take profit and stop loss." />
+  <meta property="og:url" content="https://calculatorpnl.com/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="P&L Calculator" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="P&L Calculator for Trading" />
+  <meta name="twitter:description" content="Calculate your trading profit and loss instantly. Free online P&L calculator." />
   <link rel="icon" type="image/x-icon" href="img/favicon.ico">
   <link rel="stylesheet" href="css/tailwind.css" />
   <link rel="stylesheet" href="css/index.css" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "P&L Trading Calculator",
+    "url": "https://calculatorpnl.com/",
+    "description": "Calculate profit and loss on trading positions using entry price, take profit, and stop loss.",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What does P&L mean in trading?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "P&L stands for Profit and Loss. It measures how much money a trade has made or lost."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do you calculate profit on a trade?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Profit equals (Take Profit Price minus Entry Price) times Quantity. The quantity is your invested capital divided by the entry price."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do you calculate loss on a trade?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Loss equals (Stop Loss Price minus Entry Price) times Quantity. This shows the maximum potential loss for the position."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the difference between take profit and stop loss?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Take profit is the target price to close a winning trade. Stop loss is the safety limit to close a losing trade and prevent further losses."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does this calculator include commissions?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. This calculator does not factor in broker commissions, spreads, or swap fees."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I use this for any type of trade?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. The calculator works for any market such as forex, stocks, or crypto, as long as you know the entry price, take profit, and stop loss values."
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body class="min-h-screen flex flex-col font-sans antialiased">
 
   <main class="flex-1 flex items-center justify-center p-4">
 
   <!-- Language Selector -->
-  <select id="langSelect" class="fixed top-4 right-4 z-50 lang-select">
+  <select id="langSelect" class="fixed top-4 right-4 z-50 lang-select" aria-label="Select language">
     <option value="en">English</option>
     <option value="es">Spanish</option>
   </select>
@@ -33,26 +110,27 @@
         P&amp;L
       </div>
       <div>
-        <h1 class="text-xl font-semibold text-white tracking-tight" data-i18n="title">Calculadora de P&amp;L</h1>
+        <h1 class="text-xl font-semibold text-white tracking-tight" data-i18n="h1Title">P&L Calculator for Trading</h1>
         <p class="text-xs text-gray-400 tracking-wide" data-i18n="subtitle">Profit &amp; Loss Estimator</p>
       </div>
     </div>
 
       <div class="mb-5">
-        <p class="text-center text-xs italic text-amber-300/70" data-i18n="disclaimer">Solo EUR/USD · Sin soporte para pares cripto</p>
+        <p class="text-center text-xs italic text-amber-300/70" data-i18n="disclaimer">EUR/USD Only · No crypto pair support</p>
       </div>
 
     <form id="calcForm" class="space-y-5">
       <div class="input-wrapper">
-        <label for="investedCapital" class="block text-xs font-medium text-gray-300 uppercase tracking-widest mb-1.5" data-i18n="investedCapital">Capital Invertido</label>
+        <label for="investedCapital" class="block text-xs font-medium text-gray-300 uppercase tracking-widest mb-1.5" data-i18n="investedCapital">Invested Capital</label>
         <input type="text" id="investedCapital" name="investedCapital" inputmode="decimal" required
-               class="input-space w-full rounded-xl px-4 py-3 text-sm" placeholder="0.00" />
+               class="input-space w-full rounded-xl px-4 py-3 text-sm" placeholder="0.00" aria-describedby="investedCapital-error" />
+        <p id="investedCapital-error" class="field-error" role="alert" hidden></p>
       </div>
 
       <div class="input-wrapper">
         <label for="entryPrice" class="block text-xs font-medium text-gray-300 uppercase tracking-widest mb-1.5">
-          <span data-i18n="entryPrice">Precio de Entrada</span>
-          <button type="button" class="info-icon-btn" aria-label="Más información" data-i18n-aria="moreInfo">
+          <span data-i18n="entryPrice">Entry Price</span>
+          <button type="button" class="info-icon-btn" aria-label="More information" data-i18n-aria="moreInfo">
             <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="8" cy="8" r="7"/>
               <path d="M8 7.5v4"/>
@@ -61,15 +139,16 @@
           </button>
         </label>
         <input type="text" id="entryPrice" name="entryPrice" inputmode="decimal" required
-               class="input-space w-full rounded-xl px-4 py-3 text-sm" placeholder="0.00" />
-        <div class="info-panel"><p class="info-panel-text info-panel-text--entry" data-i18n="infoEntry">Precio al que se abre la posición en el mercado.</p></div>
+               class="input-space w-full rounded-xl px-4 py-3 text-sm" placeholder="0.00" aria-describedby="entryPrice-error" />
+        <p id="entryPrice-error" class="field-error" role="alert" hidden></p>
+        <div class="info-panel"><p class="info-panel-text info-panel-text--entry" data-i18n="infoEntry">Price at which the market position is opened.</p></div>
       </div>
 
       <div class="grid grid-cols-2 gap-4">
         <div class="input-wrapper">
           <label for="takeProfitPrice" class="block text-xs font-medium text-gray-300 uppercase tracking-widest mb-1.5">
             Take Profit
-            <button type="button" class="info-icon-btn" aria-label="Más información" data-i18n-aria="moreInfo">
+            <button type="button" class="info-icon-btn" aria-label="More information" data-i18n-aria="moreInfo">
               <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="8" cy="8" r="7"/>
                 <path d="M8 7.5v4"/>
@@ -78,14 +157,15 @@
             </button>
           </label>
           <input type="text" id="takeProfitPrice" name="takeProfitPrice" inputmode="decimal" required
-                 class="input-space w-full rounded-xl px-4 py-3 text-sm" placeholder="0.00" />
-          <div class="info-panel"><p class="info-panel-text info-panel-text--tp" data-i18n="infoTP">Precio objetivo al cual se cerrará la operación para obtener ganancias.</p></div>
+                 class="input-space w-full rounded-xl px-4 py-3 text-sm" placeholder="0.00" aria-describedby="takeProfitPrice-error" />
+          <p id="takeProfitPrice-error" class="field-error" role="alert" hidden></p>
+          <div class="info-panel"><p class="info-panel-text info-panel-text--tp" data-i18n="infoTP">Target price at which the trade will be closed for profit.</p></div>
         </div>
 
         <div class="input-wrapper">
           <label for="stopLossPrice" class="block text-xs font-medium text-gray-300 uppercase tracking-widest mb-1.5">
             Stop Loss
-            <button type="button" class="info-icon-btn" aria-label="Más información" data-i18n-aria="moreInfo">
+            <button type="button" class="info-icon-btn" aria-label="More information" data-i18n-aria="moreInfo">
               <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="8" cy="8" r="7"/>
                 <path d="M8 7.5v4"/>
@@ -94,21 +174,22 @@
             </button>
           </label>
           <input type="text" id="stopLossPrice" name="stopLossPrice" inputmode="decimal" required
-                 class="input-space w-full rounded-xl px-4 py-3 text-sm" placeholder="0.00" />
-          <div class="info-panel"><p class="info-panel-text info-panel-text--sl" data-i18n="infoSL">Precio límite al cual se cerrará la operación para evitar pérdidas mayores.</p></div>
+                 class="input-space w-full rounded-xl px-4 py-3 text-sm" placeholder="0.00" aria-describedby="stopLossPrice-error" />
+          <p id="stopLossPrice-error" class="field-error" role="alert" hidden></p>
+          <div class="info-panel"><p class="info-panel-text info-panel-text--sl" data-i18n="infoSL">Limit price at which the trade will be closed to avoid further losses.</p></div>
         </div>
       </div>
 
       <button type="submit"
               class="btn-glow w-full bg-cyber-500 hover:bg-cyber-400 text-black font-semibold py-3 px-4 rounded-xl transition-all duration-300 text-sm uppercase tracking-widest" data-i18n="calculate">
-        Calcular
+        Calculate
       </button>
     </form>
 
     <div id="results" class="hidden mt-8 space-y-4">
 
       <div class="result-card rounded-xl p-5 text-center">
-        <span class="text-xs text-gray-400 uppercase tracking-widest" data-i18n="assetQuantity">Cantidad del Activo</span>
+        <span class="text-xs text-gray-400 uppercase tracking-widest" data-i18n="assetQuantity">Asset Quantity</span>
         <p id="assetQuantity" class="result-value text-2xl font-bold text-cyber-400 mt-1"></p>
       </div>
 
@@ -140,16 +221,109 @@
 
       <div class="relative pt-4">
         <div class="absolute top-0 left-1/4 right-1/4 h-px bg-linear-to-r from-transparent via-white/10 to-transparent"></div>
-        <p class="text-center text-xs italic text-gray-400" data-i18n="feesNotIncluded">No se cuentan las comisiones.</p>
+        <p class="text-center text-xs italic text-gray-400" data-i18n="feesNotIncluded">Commissions not included.</p>
       </div>
     </div>
   </div>
   </main>
+
+  <div class="seo-divider"></div>
+
+  <section class="seo-content">
+
+    <div class="seo-intro">
+      <h2 class="seo-heading" data-i18n="seoWhatIsH2">What Is P&L in Trading?</h2>
+      <p class="seo-text" data-i18n="seoWhatIsP1">P&L stands for Profit and Loss. It represents the financial result of a trading position — the difference between the price at which you enter a trade and the price at which you exit, multiplied by the number of units traded. A positive P&L means the trade is profitable; a negative P&L means a loss.</p>
+    </div>
+
+    <div class="seo-columns">
+      <div class="seo-col-card">
+        <h2 class="seo-col-title" data-i18n="seoHowCalcH2">How to Calculate Profit and Loss</h2>
+        <p class="seo-col-text" data-i18n-html="seoHowCalcP1">The basic formula is: <strong class="text-white">P&L = (Exit Price − Entry Price) × Quantity</strong>. This calculator determines the asset quantity from your invested capital and entry price, then computes both the potential profit at your take profit level and the potential loss at your stop loss level.</p>
+      </div>
+      <div class="seo-col-card">
+        <h2 class="seo-col-title" data-i18n="seoHowWorksH2">How This Calculator Works</h2>
+        <p class="seo-col-text" data-i18n="seoHowWorksP1">Enter four values: invested capital, entry price, take profit price, and stop loss price. The calculator shows the quantity of the asset you would acquire, the net profit if the take profit is reached, and the net loss if the stop loss is hit — all expressed in both absolute terms and as a percentage of your capital.</p>
+      </div>
+    </div>
+
+    <div class="trade-preview">
+      <h2 class="trade-preview-title" data-i18n="seoExampleH2">Example Calculation</h2>
+      <div class="trade-preview-grid">
+        <div class="trade-preview-item">
+          <span class="trade-preview-label" data-i18n="exCapital">Capital</span>
+          <span class="trade-preview-value">€250</span>
+        </div>
+        <div class="trade-preview-item">
+          <span class="trade-preview-label" data-i18n="exEntry">Entry</span>
+          <span class="trade-preview-value">€100</span>
+        </div>
+        <div class="trade-preview-item">
+          <span class="trade-preview-label" data-i18n="exTP">Take Profit</span>
+          <span class="trade-preview-value tp-color">€110</span>
+        </div>
+        <div class="trade-preview-item">
+          <span class="trade-preview-label" data-i18n="exSL">Stop Loss</span>
+          <span class="trade-preview-value sl-color">€95</span>
+        </div>
+      </div>
+      <div class="trade-preview-divider"></div>
+      <p class="trade-preview-units" data-i18n="exAcquire">You acquire 2.5 units.</p>
+      <div class="trade-preview-results">
+        <div class="trade-preview-result tp-color">
+          <span class="trade-preview-result-value">+€25</span>
+          <span class="trade-preview-result-pct">+10%</span>
+        </div>
+        <div class="trade-preview-result sl-color">
+          <span class="trade-preview-result-value">−€12.50</span>
+          <span class="trade-preview-result-pct">−5%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-section">
+      <h2 class="seo-heading" data-i18n="seoFAQH2">Frequently Asked Questions</h2>
+
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary class="faq-summary" data-i18n="faqQ1">What does P&L mean in trading?</summary>
+          <p class="faq-answer" data-i18n="faqA1">P&L stands for Profit and Loss. It measures how much money a trade has made or lost.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-summary" data-i18n="faqQ2">How do you calculate profit on a trade?</summary>
+          <p class="faq-answer" data-i18n="faqA2">Profit equals (Take Profit Price minus Entry Price) times Quantity. The quantity is your invested capital divided by the entry price.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-summary" data-i18n="faqQ3">How do you calculate loss on a trade?</summary>
+          <p class="faq-answer" data-i18n="faqA3">Loss equals (Stop Loss Price minus Entry Price) times Quantity. This shows the maximum potential loss for the position.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-summary" data-i18n="faqQ4">What is the difference between take profit and stop loss?</summary>
+          <p class="faq-answer" data-i18n="faqA4">Take profit is the target price to close a winning trade. Stop loss is the safety limit to close a losing trade and prevent further losses.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-summary" data-i18n="faqQ5">Does this calculator include commissions?</summary>
+          <p class="faq-answer" data-i18n="faqA5">No. This calculator does not factor in broker commissions, spreads, or swap fees.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-summary" data-i18n="faqQ6">Can I use this for any type of trade?</summary>
+          <p class="faq-answer" data-i18n="faqA6">Yes. The calculator works for any market — forex, stocks, crypto, or others — as long as you know the entry price, take profit, and stop loss values.</p>
+        </details>
+      </div>
+    </div>
+
+  </section>
+
   <footer class="py-4 text-gray-400 text-xs flex flex-col md:flex-row justify-between items-center px-4 gap-1">
-    <p data-i18n="copyright">Copyright &copy; 2026 por Stefan Cojita. Todos los derechos reservados.</p>
+    <p data-i18n="copyright">Copyright &copy; 2026 by Stefan Cojita. All rights reserved.</p>
     <p data-i18n-html="reportBug">
-      Para reportar bugs o indicar sugerencias, env&iacute;e un mensaje a este
-      <a href="https://github.com/SCojita" class="underline hover:text-cyber-400 transition-colors duration-200" target="_blank" rel="noopener noreferrer">perfil</a>
+      To report bugs or suggest improvements, send a message to this
+      <a href="https://github.com/SCojita" class="underline hover:text-cyber-400 transition-colors duration-200" target="_blank" rel="noopener noreferrer">profile</a>
     </p>
   </footer>
 
