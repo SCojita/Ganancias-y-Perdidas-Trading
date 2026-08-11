@@ -146,15 +146,12 @@ pnl-calc-backend/
 └── package.json
 ```
 
-## Deploy
+## Desarrollo
 
-Conecta el repositorio a [Vercel](https://vercel.com). La plataforma detecta `vercel.json` automáticamente y deploya `src/app.js` como serverless function.
-
-```bash
-npm i -g vercel
-vercel
-```
+Este proyecto ha sido desarrollado con apoyo de herramientas de inteligencia artificial (AI-assisted development). La definición de requisitos, decisiones de arquitectura, revisión de la implementación, pruebas funcionales, revisión de seguridad, optimización SEO y despliegue fueron realizados bajo mi supervisión.
 
 ## Disclaimer
 
-Esta herramienta es solo para fines informativos y educativos. No constituye asesoría financiera. Verificá los resultados con tu broker antes de operar.
+Esta herramienta es solo para fines informativos y educativos. No constituye asesoría financiera. Verifica los resultados con tu broker antes de operar.
+
+
